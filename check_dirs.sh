@@ -10,14 +10,15 @@ NSTEPS=75000
 
 for ((Y=3;Y<=4;Y++));
 do
-    for ((X=17;X<=23;X++));
+    for ((Z=17;Z<=23;Z++));
 	do
-		OUT_DIR="${BIOCELLION_MODEL_PATH}/output/output_parameter${X}_trial${Y}"
-		LOG_FILE="${OUT_DIR}/output_parameter${X}_trial${Y}.txt"
-		SIM_SET="parameter${X}_trial${Y}"
+		OUT_DIR="${BIOCELLION_MODEL_PATH}/output/output_parameter${Z}_trial${Y}"
+		LOG_FILE="${OUT_DIR}/output_parameter${Z}_trial${Y}.txt"
+		SIM_SET="parameter${Z}_trial${Y}"
+		
 		if test -f $LOG_FILE 
 		then
-			if  grep -q "75000/75000" ${LOG_FILE}
+			if  grep -q "${NSTEPS}/${NSTEPS}" ${LOG_FILE}
 			then
 				echo -e "$SIM_SET ran to completion"
 			else
