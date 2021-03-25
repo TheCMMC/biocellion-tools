@@ -1,3 +1,4 @@
+#! /bin/bash
 
 # This script automates biocellion simulations for the ABM-only-microcarriers simulations (http://github.com/thecmmc/ABM-only-microcarriers)
 # see http://github.com/thecmmc/biocellion-tools for more information
@@ -27,9 +28,9 @@ MODEL_DEFINE="${BIOCELLION_MODEL_PATH}/model_define.h"
 RUN_MODEL="${BIOCELLION_MODEL_PATH}/run_model.xml"
 
 # Set the values for Y (trial) and Z (parameter ID) in the for loops to specify the range of simulations to run
-for ((Y=3;Y<=4;Y++));
+for ((Y=4;Y<=5;Y++));
 do
-    for ((Z=17;Z<=29;Z++));
+    for ((Z=1;Z<=16;Z++));
     do
         # list indexing starts at 0, while parameter IDs start at 1, set simulation specific paths and create output directory
         INDEX=$(expr $Z - 1)
