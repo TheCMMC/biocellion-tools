@@ -1,3 +1,4 @@
+#! /bin/bash
 
 # This script automates biocellion simulations for the ABM-only-microcarriers simulations (http://github.com/thecmmc/ABM-only-microcarriers)
 # see http://github.com/thecmmc/biocellion-tools for more information
