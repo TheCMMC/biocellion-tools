@@ -7,7 +7,7 @@
 BIOCELLION_MODEL_PATH="/home/jaroknor/NLeSC/InSilicoMeat/Biocellion/Biocellion-3.1/biocellion-3.1/biocellion-user/ABM-microcarriers"
 PARAMETER_FILE="${BIOCELLION_MODEL_PATH}/Parameters-ABM-CFD.csv"
 
-# Set the number of steps to check for completion of old simulations (will not be used to run the new simulations!)
+# Set the number of steps to check for completion of old simulations (will not be used to run the new simulations, this should be set by hand in run_model.xml!)
 NSTEPS_CHECK=120000
 
 # extract the parameters from the spreadsheet (skips the first 4 header lines)
