@@ -7,11 +7,14 @@
 BIOCELLION_MODEL_PATH="/home/jaroknor/NLeSC/InSilicoMeat/Biocellion/Biocellion-3.1/biocellion-3.1/biocellion-user/ABM-microcarriers"
 PARAMETER_FILE="${BIOCELLION_MODEL_PATH}/Parameters-ABM-CFD.csv"
 
+# Set the number of steps to check for completion of old simulations (will not be used to run the new simulations!)
+NSTEPS_CHECK=120000
+
 # extract the parameters from the spreadsheet (skips the first 4 header lines)
 SKIP=4
 IDS=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f1) )
-TRESH=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f2) )
-MECHTRESHD=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f3) )
+MECHTRESHD=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f2) )
+TRESH=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f3) )
 RPM=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f4) )
 
 # check whether arrays have been extracted properly, run this piece first before you execute the rest of the script
@@ -26,9 +29,9 @@ MODEL_CONFIG="${BIOCELLION_MODEL_PATH}/model_routine_config.cpp"
 RUN_MODEL="${BIOCELLION_MODEL_PATH}/run_model.xml"
 
 # Set the values for Y (trial) and Z (parameter ID) in the for loops to specify the range of simulations to run
-for ((Y=4;Y<=4;Y++));
+for ((Y=1;Y<=6;Y++));
 do
-    for ((Z=5;Z<=7;Z++));
+    for ((Z=5;Z<=18;Z++));
     do
         # list indexing starts at 0, while parameter IDs start at 1, set simulation specific paths and create output directory
         INDEX=$(expr $Z - 1)
@@ -37,15 +40,15 @@ do
         mkdir -p $OUT_DIR
 
         # test whether the output is already completed. Failed runs will be run again. 
-        if [ "$(ls -A $OUT_DIR)" ] && $(grep -q "75000/75000" "${OUT_DIR}/output_${SIM_SET}.txt")
+        if [ "$(ls -A $OUT_DIR)" ] && $(grep -q "${NSTEPS_CHECK}/${NSTEPS_CHECK}" "${OUT_DIR}/output_${SIM_SET}.txt")
         then
             echo -e "$SIM_SET ran to completion \n"
 
         else
             cd $BIOCELLION_MODEL_PATH
-            # make clean
+            make clean
             echo "Prepare simulations for id = ${IDS[$INDEX]}, trial = $Y"
-            echo "with parameters: treshold = ${TRESH[$INDEX]}, mech_treshold = ${MECHTRESHD[$INDEX]}, rpm = ${RPM[$INDEX]}"
+            echo "with parameters: mech_treshold = ${MECHTRESHD[$INDEX]}, treshold = ${TRESH[$INDEX]}, rpm = ${RPM[$INDEX]}"
 
             # prepare biocellion files with new parameters
             sed -i "s/const REAL STRESS_TRESHOLD = .\+/const REAL STRESS_TRESHOLD = ${TRESH[$INDEX]} ;/g" ${MODEL_DEFINE}
@@ -55,11 +58,11 @@ do
             sed -i "s@<stdout path=.\+@<stdout path=\"${OUT_DIR}\" verbosity=\"3\" time_stamp=\"yes\"/>@g" ${RUN_MODEL}
             
             # build the biocellion model
-            # make -s 
+            make -s 
 
             # run the simulation
             echo "Begin simulation for $OUT_DIR"
-            # biocellion "${BIOCELLION_MODEL_PATH}/run_model.xml"
+            biocellion "${BIOCELLION_MODEL_PATH}/run_model.xml"
             echo -e "End simulation for $OUT_DIR \n"
 
             #rename the summary file to the proper filename and move back to the original directory
