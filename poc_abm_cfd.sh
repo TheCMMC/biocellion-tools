@@ -17,6 +17,8 @@ IDS=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f1) )
 MECHTRESHD=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f2) )
 TRESH=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f3) )
 RPM=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f4) )
+HILL=( $(tail -n +$SKIP ${PARAMETER_FILE} | cut -d ',' -f5) )
+
 
 # check whether arrays have been extracted properly, run this piece first before you execute the rest of the script
 echo "array of ParamIDs  : ${IDS[@]}"
@@ -30,9 +32,9 @@ MODEL_CONFIG="${BIOCELLION_MODEL_PATH}/model_routine_config.cpp"
 RUN_MODEL="${BIOCELLION_MODEL_PATH}/run_model.xml"
 
 # Set the values for Y (trial) and Z (parameter ID) in the for loops to specify the range of simulations to run
-for ((Y=1;Y<=6;Y++));
+for ((Y=7;Y<=10;Y++));
 do
-    for ((Z=5;Z<=18;Z++));
+    for ((Z=19;Z<=32;Z++));
     do
         # list indexing starts at 0, while parameter IDs start at 1, set simulation specific paths and create output directory
         INDEX=$(expr $Z - 1)
@@ -49,9 +51,10 @@ do
             cd $BIOCELLION_MODEL_PATH
             make clean
             echo "Prepare simulations for id = ${IDS[$INDEX]}, trial = $Y"
-            echo "with parameters: mech_treshold = ${MECHTRESHD[$INDEX]}, treshold = ${TRESH[$INDEX]}, rpm = ${RPM[$INDEX]}"
+            echo "with parameters: mech_treshold = ${MECHTRESHD[$INDEX]}, treshold = ${TRESH[$INDEX]}, rpm = ${RPM[$INDEX]}, hill = ${HILL[$INDEX]}"
 
             # prepare biocellion files with new parameters
+            sed -i "s/const REAL STRESS_HILL_EXPONENT = .\+/const REAL STRESS_HILL_EXPONENT = ${HILL[$INDEX]} ;/g" ${MODEL_DEFINE}
             sed -i "s/const REAL STRESS_TRESHOLD = .\+/const REAL STRESS_TRESHOLD = ${TRESH[$INDEX]} ;/g" ${MODEL_DEFINE}
             sed -i "s/const REAL MECH_STRESS_TRESHOLD_DEATH = .\+/const REAL MECH_STRESS_TRESHOLD_DEATH = ${MECHTRESHD[$INDEX]} ;/g" ${MODEL_DEFINE}
             sed -i "s/  cfd_setup((char\*)\"Velocity.\+/  cfd_setup((char\*)\"Velocity_${RPM[$INDEX]}rpm.txt\") ;/g" ${MODEL_CONFIG}
