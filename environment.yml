@@ -1,0 +1,11 @@
+name: biocellion-tools
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - paraview
+  - jupyterlab
+  - pathlib
+  - salib
+prefix: /home/jaroknor/anaconda3/envs/biocellion-tools
