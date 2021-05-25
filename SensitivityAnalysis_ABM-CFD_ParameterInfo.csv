@@ -1,0 +1,5 @@
+name,range_min,range_max,range_type,file
+HILLS_EXPONENT,1,5,linear,model_define.h
+MECH_STRESS_TRESHOLD_DEATH,1.00E-07,1.00E-05,exponential,model_define.h
+STRESS_TRESHOLD,1.00E-08,1.00E-06,exponential,model_define.h
+RPM,60,220,dichotomous,model_routine_config.cpp
