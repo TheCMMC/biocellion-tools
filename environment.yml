@@ -7,4 +7,5 @@ dependencies:
   - paraview
   - jupyterlab
   - pathlib
+  - salib
 prefix: /home/jaroknor/anaconda3/envs/biocellion-tools

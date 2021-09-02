@@ -1,0 +1,10 @@
+Description,name,range_min,range_max,range_type,file,type,manuscript value
+,STRESS_HILL_EXPONENT,1,10,linear,model_define.h,REAL,
+,MECH_STRESS_TRESHOLD_DEATH,1.00E-07,1.00E-05,exponential,model_define.h,REAL,
+,STRESS_TRESHOLD,1.00E-08,1.00E-06,exponential,model_define.h,REAL,
+Cell-cell spring constant,A_AGENT_STIFFNESS_CC,1.00E-04,1.00E-02,exponential,model_define.h,REAL,1.00E-03
+Cell-cell bond flexibility,A_AGENT_BOND_S_CC,1.00E-02,9.00E-01,exponential,model_define.h,REAL,2.00E-01
+Thresholding factor for cell-cell bond breaking,A_AGENT_BOND_DESTROY_FACTOR_CC,1.00E+00,1.50E+00,linear,model_define.h,REAL,1.10E+00
+Cell-microcarrier spring constant,A_AGENT_STIFFNESS_CM,2.20E-04,2.20E-02,expenential,model_define.h,REAL,2.20E-03
+Cell-microcarrier bond flexibility,A_AGENT_BOND_S_CM,1.00E-02,9.00E-01,exponential,model_define.h,REAL,2.00E-01
+Thresholding factor for cell-microcarrier bond breaking,A_AGENT_BOND_DESTROY_FACTOR_CM,1.00E+00,1.50E+00,linear,model_define.h,REAL,1.10E+00
