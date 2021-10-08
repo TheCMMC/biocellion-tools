@@ -8,4 +8,6 @@ dependencies:
   - jupyterlab
   - pathlib
   - salib
+  - tqdm
+  - ipywidgets
 prefix: /home/jaroknor/anaconda3/envs/biocellion-tools
